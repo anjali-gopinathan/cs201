@@ -1,37 +1,23 @@
 package asgopina_CS201L_Assignment1;
 
-import java.awt.Menu;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.IllegalCharsetNameException;
+
 import java.util.Map;
 import java.util.Scanner;
-
-import javax.print.event.PrintJobAttributeEvent;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.sun.jdi.Type;
-
-//import com.sun.jdi.Type;
-import java.lang.*;
-import java.util.Iterator;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 public class Assignment1 {
-//	private void printMenu(FileReader jsonFile) {
-//		
-//	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner scan = new Scanner(System.in);
 		
-		System.out.println("What is the name of the company file?");
-		String inputFilename = scan.nextLine();
+		System.out.print("What is the name of the company file?");
+		String inputFilename = scan.next();
 		Gson gson = new Gson();			
 		
 		try {
@@ -51,12 +37,15 @@ public class Assignment1 {
 //			String stocksString = map.get("data");
 //			List<Stock> stocks = gson.fromJson(stocksString, new TypeToken<List<Stock>>() {}.getType());
 			List<Stock>stocks = map.get("data"); 
-			System.out.println("Stocks:\n" + stocks);
+//			System.out.println("Stocks:\n" + stocks);
+			for(int i=0; i<stocks.size(); i++) {
+				System.out.println(stocks.get(i).toString());
+			}
 //			for(Iterator<Stock> s = stocks.iterator(); s.hasNext();) {
-////				Stock stock = s.next();
+//				Stock stock = s.next();
 //				System.out.println(stock.toString());
 //			}
-			
+//			
 		} catch (FileNotFoundException fnfe) {
 			System.out.println("Input file could not be found: " + fnfe.getMessage());
 		} catch (IOException ioe) {
@@ -64,10 +53,19 @@ public class Assignment1 {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("The file has been properly read.");
+			System.out.println("The file has been properly read.\n");
 		}
 		
-//		menu(fr);
+		System.out.print(		"\t1) Display all public companies\n" +
+								"\t2) Search for a stock (by ticker)\n" +
+								"\t3) Search for all stocks on an exchange\n" + 
+								"\t4) Add a new company/stocks\n" + 
+								"\t5) Remove a company\n" + 
+								"\t6) Sort companies\n" + 
+								"\t7) Exit\n" + 
+							"What would you like to do?");
+		int choice;
+//		ds
 		
 
 	}
@@ -121,10 +119,16 @@ class Stock{
 		return this.exchangeCode;
 	}
 	public String toString() {
-		return		"name: " + this.name + "\n" + 
-			      	"ticker: " + this.ticker + "\n" + 
-			      	"startDate: " + this.startDate + "\n" + 
-			      	"description: " + this.description + "\n" + 
-			      	"exchangeCode: " + this.exchangeCode;
+//		return		"name: " + this.name + "\n" + 
+//			      	"ticker: " + this.ticker + "\n" + 
+//			      	"startDate: " + this.startDate + "\n" + 
+//			      	"description: " + this.description + "\n" + 
+//			      	"exchangeCode: " + this.exchangeCode;
+		String desc_multilineString = this.description.replaceAll("(?m)^", "\t");
+		return		this.name + 
+					", symbol " + this.ticker + 
+					", started on " + this.startDate +
+					", listed on" + this.exchangeCode + 
+			      	",\n\t" + desc_multilineString;
 	}
 }
