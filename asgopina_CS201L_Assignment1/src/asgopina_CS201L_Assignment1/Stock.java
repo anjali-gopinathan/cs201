@@ -8,7 +8,11 @@ public class Stock {
 	private String exchangeCode;
 	
 	public Stock() {
-		
+		setName(null);
+		setTicker(null);
+		setStartDate(null);
+		setDescription(null);
+		setExchangeCode(null);
 	}
 	public Stock(String name, String ticker, String startDate, String description, String exchangeCode) {
 		setName(name);
