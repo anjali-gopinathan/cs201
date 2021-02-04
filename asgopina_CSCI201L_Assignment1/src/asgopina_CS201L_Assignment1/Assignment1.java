@@ -5,13 +5,10 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-//import java.io.Writer;
-//import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -27,7 +24,7 @@ public class Assignment1 {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Boolean isDate = true;
 		try {
-			Date date = sdf.parse(dateStr);
+			sdf.parse(dateStr);
 		} catch (ParseException e) {
 			isDate = false;
 		}
@@ -114,7 +111,6 @@ public class Assignment1 {
 						System.out.println("\nYour edits have been saved to " + inputFilename);
 					} catch (IOException e) {
 						System.out.println("Error writing to file");
-//						e.printStackTrace();
 					}	
 				}
 				else if (choice != 2){
@@ -228,19 +224,13 @@ public class Assignment1 {
 					break;
 				case 3:
 					String exchangeTarget;
-//					Boolean foundExchange;
 					// search for a stock by ticker
 					if (stocks.size() > 0) {
 						do {
 							badInput = false;
 							System.out.println("What Stock Exchange would like to search for? ");
-//							if(scan.hasNextLine()) {
 							exchangeTarget = scan.nextLine();
 							badInput = choice3_findStocksByExchange(stocks, exchangeTarget);
-//							}
-//							else {
-//								badInput = true;
-//							}
 						} while(badInput);
 					}
 					else {
@@ -264,13 +254,11 @@ public class Assignment1 {
 					} while(badInput);
 					
 					System.out.println("What is the stock symbol of " + newCompanyName + "? ");
-//					scan.nextLine();
 					newTicker = scan.nextLine();
 					
 					do {
 						badInput = false;
 						System.out.println("What is the start date of " + newCompanyName + "? ");
-//						scan.nextLine();
 						newStartDate = scan.nextLine();
 						if (!isDateFormat(newStartDate)) {
 							badInput = true;
@@ -279,11 +267,9 @@ public class Assignment1 {
 					} while(badInput);
 					
 					System.out.println("What is the exchange where " + newCompanyName + " is listed? ");
-//					scan.nextLine();
 					newExchangeCode = scan.nextLine();
 					
 					System.out.println("What is the description of " + newCompanyName + "? ");
-//					scan.nextLine();
 					newDescription = scan.nextLine();
 					Stock newStock = new Stock(newCompanyName, newTicker, newStartDate, newDescription, newExchangeCode);
 					stocks.add(newStock);
@@ -345,6 +331,4 @@ public class Assignment1 {
 			}
 		} while(!done);
 	}
-
-
 }

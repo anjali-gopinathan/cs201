@@ -3,8 +3,15 @@
     {
       "name": "Tesla Inc",
       "ticker": "TSLA",
-      "startDate": "2010-06-29",
+      "startDate": "2010-0629",
       "description": "Tesla Motors, Inc. (Tesla) designs, develops, manufactures and sells electric vehicles and advanced electric vehicle powertrain components.",
+      "exchangeCode": "NASDAQ"
+    },
+    {
+      "name": "Apple Inc",
+      "ticker": "AAPL",
+      "startDate": "1980-12-12",
+      "description": "Apple Inc. (Apple) designs, manufactures and markets mobile communication and media devices, personal computers, and portable digital music players, and a variety of related software, services, peripherals, networking solutions, and third-party digital content and applications.",
       "exchangeCode": "NASDAQ"
     },
     {
@@ -20,13 +27,6 @@
       "startDate": "1984-07-19",
       "description": "AT\u0026T Inc. is a diversified, global leader in telecommunications, media and entertainment, and technology. AT\u0026T Communications provides more than 100 million U.S. consumers with entertainment and communications experiences across TV, mobile and broadband. ",
       "exchangeCode": "NYSE"
-    },
-    {
-      "name": "Apple Inc",
-      "ticker": "AAPL",
-      "startDate": "1980-12-12",
-      "description": "Apple Inc. (Apple) designs, manufactures and markets mobile communication and media devices, personal computers, and portable digital music players, and a variety of related software, services, peripherals, networking solutions, and third-party digital content and applications.",
-      "exchangeCode": "NASDAQ"
     },
     {
       "name": "Advanced Micro Devices",
