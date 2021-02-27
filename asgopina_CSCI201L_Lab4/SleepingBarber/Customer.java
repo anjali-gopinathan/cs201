@@ -5,12 +5,14 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Customer extends Thread {
 
 	private int customerName;
-	private SleepingBarber sb;
+	private SleepingBarber sb1;
+	private SleepingBarber sb2;
 	private Lock customerLock;
 	private Condition gettingHaircutCondition;
 	public Customer(int customerName, SleepingBarber sb1, SleepingBarber sb2) {
 		this.customerName = customerName;
-		this.sb = sb;
+		this.sb1 = sb1;
+		this.sb2 = sb2;
 		customerLock = new ReentrantLock();
 		gettingHaircutCondition = customerLock.newCondition();
 	}
@@ -31,12 +33,18 @@ public class Customer extends Thread {
 		}
 	}
 	public void run() {
-		boolean seatsAvailable = sb.addCustomerToWaiting(this);
+		boolean seatsAvailable = SleepingBarber.addCustomerToWaiting(this);
 		if (!seatsAvailable) {
 			Util.printMessage("Customer " + customerName + " leaving...no seats available.");
 			return;
 		}
-		sb.wakeUpBarber();
+//		sb.wakeUpBarber();
+		if((sb1.isBarberIsSleeping() && sb2.isBarberIsSleeping()) || sb1.isBarberIsSleeping()) {
+			sb1.wakeUpBarber();
+		}
+		else if(sb2.isBarberIsSleeping()) {
+			sb2.wakeUpBarber();
+		}
 		try {
 			customerLock.lock();
 			gettingHaircutCondition.await();

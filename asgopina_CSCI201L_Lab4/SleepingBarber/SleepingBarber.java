@@ -6,29 +6,34 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.print.event.PrintJobAttributeEvent;
 
 public class SleepingBarber extends Thread {
 
 	private static int maxSeats;
 	private static int totalCustomers;
-	private static ArrayList<Customer> customersWaiting;
+	private static ArrayList<Customer> customersWaiting = new ArrayList<Customer>();
 	private Lock barberLock;
-	private static Condition sleepingCondition;
-	private boolean moreCustomers;
-	private String barberName;
+	private Condition sleepingCondition;
+	private static boolean moreCustomers;
+	private static String barberName;
 	private boolean barberIsSleeping;
 	
 	public SleepingBarber(String barberName_) {
 		maxSeats = 3;
 		totalCustomers = 10;
 		moreCustomers = true;
-		customersWaiting = new ArrayList<Customer>();		// need to make this thread safe
+//		customersWaiting = new ArrayList<Customer>();		// need to make this thread safe
 		barberLock = new ReentrantLock();
 		sleepingCondition = barberLock.newCondition();
 		barberName = barberName_;
-		barberIsSleeping = true;
+		setBarberIsSleeping(true);
 		this.start();
+	}
+	public boolean isBarberIsSleeping() {
+		return barberIsSleeping;
+	}
+	public void setBarberIsSleeping(boolean barberIsSleeping) {
+		this.barberIsSleeping = barberIsSleeping;
 	}
 	public synchronized static boolean addCustomerToWaiting(Customer customer) {		// static lets the method be shared across several instances as a class method
 		if (customersWaiting.size() == maxSeats) {
@@ -50,6 +55,7 @@ public class SleepingBarber extends Thread {
 		try {
 			barberLock.lock();
 			sleepingCondition.signal();
+			setBarberIsSleeping(false);
 		} finally {
 			barberLock.unlock();
 		}
@@ -73,8 +79,10 @@ public class SleepingBarber extends Thread {
 			try {
 				barberLock.lock();
 				Util.printMessage("No customers, so time for " + barberName + " to sleep...");
+				setBarberIsSleeping(true);
 				sleepingCondition.await();
 				Util.printMessage("Someone woke me up! - " + barberName);
+				setBarberIsSleeping(false);
 			} catch (InterruptedException ie) {
 				System.out.println("ie while sleeping: " + ie.getMessage());
 			} finally {
@@ -88,7 +96,7 @@ public class SleepingBarber extends Thread {
 		SleepingBarber sb1 = new SleepingBarber("Mumford SB1");
 		SleepingBarber sb2 = new SleepingBarber("Sons SB2");
 		ExecutorService executors = Executors.newCachedThreadPool();
-		for (int i=0; i < sb.totalCustomers; i++) {
+		for (int i=0; i < SleepingBarber.totalCustomers; i++) {
 			Customer customer = new Customer(i, sb1, sb2);
 			executors.execute(customer);
 			try {
@@ -104,10 +112,8 @@ public class SleepingBarber extends Thread {
 			Thread.yield();
 		}
 		Util.printMessage("No more customers coming today...");
-		sb1.moreCustomers = false;
+		SleepingBarber.moreCustomers = false;
 		sb1.wakeUpBarber();
-
-		sb2.moreCustomers = false;
 		sb2.wakeUpBarber();
 
 	}
