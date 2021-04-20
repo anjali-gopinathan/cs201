@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Anjali's test form</title>
+</head>
+<body>
+
+<form name="myform" method="GET" action="FormServlet">
+<fieldset>
+<legend>Name & Email</legend>
+	<label for="fname">First name </label><input type="text" name="fname" required><br>
+	<label for="lname">Last name </label><input type="text" name="lname"><br>
+	<label for="email">Email: </label><input type="email" name="email"><br>
+  </fieldset>
+  <p>Please select your gender:</p>
+  <input type="radio" id="male" name="gender" value="male">
+  <label for="male">Male</label><br>
+  <input type="radio" id="female" name="gender" value="female">
+  <label for="female">Female</label><br>
+  <input type="radio" id="other" name="gender" value="other">
+  <label for="other">Other</label>  <br>  
+  
+  <p>Please enter your age:</p>
+  <input type="text" id="agenum" name="age"><br>
+  
+  <label for="rating">Rate how you're day is goin:</label><input type="range" name="rating" min="0" max="10"><br>
+	<label for="month">Month you were born:</label><input type="month" name="month" min="2021-04" value="2018-05"><br>
+ <label for="phone">Phone #:</label><input type="text" name="Phone Number" pattern="[7-9]{1}[0-9]{9}" 
+       title="Phone number with 7-9 and remaing 9 digit with 0-9" placeholder="123-45-678"> <br>
+  <input type="submit" name="submit" value="Submit"><br>
+  <input type="reset" name="reset" value="Reset">
+  
+  
+</form>
+<textarea rows="2" cols="50" name="comment" form="myform">
+Why</textarea>
+
+</body>
+</html>

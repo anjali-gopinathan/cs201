@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>omegaLift</title>
+
+	<!-- external css -->
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<!-- required meta tags -->
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:image" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="omegaLift">
+    <meta property="og:description" content="Share your personalized workouts with your friends!" >
+	
+	<!-- fonts -->
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@300;400;500;700&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@700&display=swap" rel="stylesheet">
+
+	<script src="https://kit.fontawesome.com/8ee5150bb3.js" crossorigin="anonymous"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Oauth -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="29267437439-q7f6nn7i51po2p1u50bb91s3muk5lthk.apps.googleusercontent.com">
+
+    <!-- AJAX -->
+    <script>
+        var size;
+        function displayAll() {
+            $("#create-a-workout").hide();
+            $(".description-container").hide();
+            $("#workout-list").show();
+            $.ajax({
+                url: "GetAllWorkouts",
+                success: function(result) {
+                    size = Object.keys(result).length;
+
+                    $("#workout-list").empty();
+                    result.forEach(function (workout) {
+                    	$("#workout-list").append(
+                                '<div class="workout workouts-fade-in-animation" onclick="displayWorkout('
+                                + workout.workoutId + ');">'
+                                + '<div class="workout-bottom-half">'
+                                + '<h1 class="workout-title">' + workout.title + '</h1>'
+                                + '<h2 class="workout-author">' + workout.author + '</h2>'
+                                + '<h2 class="workout-author">' + workout.posted + '</h2>'
+                                + '<p class="workout-description">' + workout.caption + '</p>'
+                                + '</div></div>'
+                        );
+                    });
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            });
+        }
+        function displayWorkout(workoutId) {
+            $.ajax({
+                url: "GetWorkout",
+                data: {
+                    workoutID: workoutId
+                },
+                success: function(result) {
+                    $(".description-container").html(
+                            '<div class="description-card">'
+				            + '<div class="first-half">'
+                            + '<h1 class="description-title">' + result.title + '</h1>'
+					        + '<h2 class="description-author">' + result.author + '</h2>'
+                            + '<h2 class="description-author">' + result.posted + '</h2>'
+                            + '<h2 class="description-author">' + result.caption + '</h2>'
+				            + '</div>'
+				            + '<div class="second-half">'
+					        + '<div class="description">'
+						    + '<p>' + result.description + '</p>'
+					        + '</div></div></div>'
+                    );
+                    $("#create-a-workout").hide();
+                    $("#workout-list").hide();
+                    $(".description-container").show();
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+	<div class="loader-wrapper">
+		<div class="loader"></div>
+	</div>
+	
+	<div class="main">
+		<div class="main-nav">
+			<div class="logo">
+				<a href="" id="logo-link">omega<span class="red-text">Lift</span></a>
+			</div>
+			<div class="navbar">
+				<div class="g-signin2" data-onsuccess="onSignIn" id="oauth-signin"></div>
+                <div class="profile-link" id="sign-out-link">Sign Out</div>
+				<div class="create-workout-link" id="create-page-link">Create Workout</div>
+			</div>
+            <div class="alert-banner"></div>
+		</div>
+		<!-- takes up space behind hovering nav bar. -->
+		<div class="navbar-buffer"></div>
+	    <div class="workouts-container">
+			<div class="workouts" id="workout-list">
+			</div>
+		</div>
+        <div class="create-workout-container" id="create-a-workout">
+			<div class="create-workout-card" id="create-a-workout-card">
+				<form class="create-workout-form">
+				    <input type="text" id="title" name="title" placeholder="Title" required>
+                    <input type="text" id="caption" name="caption" placeholder="Caption" required>
+					<textarea id="description" name="description"  placeholder="Description" rows="4" cols="50" required></textarea>
+					<input class="submit-button" type="submit" value="Submit">
+				</form>
+			</div>
+		</div>
+        <div class="description-container"></div>
+	</div>
+</body>
+<script>
+    // Navbar effect
+    var nav = document.querySelector('.main-nav');
+    window.addEventListener('scroll', function(){
+        if(window.pageYOffset > 10){
+            nav.classList = 'main-nav small'
+            //document.querySelector('#logo').src = "images/logoblack.png";
+            let links = document.querySelectorAll('.nav-links');
+            for (let i=0; i<links.length; i++){
+                links[i].style.color = 'rgb(70,55,48)'
+            }
+        } else {
+            nav.classList ='main-nav'
+            // document.querySelector('#logo').src = "images/logowhite.png"
+            // let links = document.querySelectorAll('.nav-links');
+            // for (let i=0; i<links.length; i++){
+            // 	links[i].style.color = 'white';
+            // }
+        }
+    })
+
+    // pre-loader
+    $(window).on("load", function(){
+        navBarButtons();
+        displayAll();
+        $(".loader-wrapper").fadeOut("slow");
+
+        // $(".navbar").addClass( "nav-fade-in-animation" );
+        // $(".logo").addClass( "nav-fade-in-animation" );
+        $(".tag").addClass( "tags-fade-in-animation" );
+        $(".workout").addClass( "workouts-fade-in-animation" );
+        $( ".resume-link" ).addClass( "highlight-animation3" );
+        $( ".highlight1" ).addClass( "highlight-animation1" );
+        $( ".highlight2" ).addClass( "highlight-animation2" );
+
+        
+    });
+
+    // DOM functions
+    $("#create-page-link").click(function() {
+        $("#workout-list").hide();
+        $(".description-container").hide();
+        $("#title").val(''),
+        $("#caption").val(''),
+        $("#description").val('')
+        $("#create-a-workout").show();
+    });
+    $("#sign-out-link").click(function() {
+        signOut();
+    });
+    $("#logo-link").click(function() {
+        displayAll();
+    });
+    $(function() {
+        $("form").validate();
+    });
+    $("form").on("submit", function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "PostWorkout",
+            type: "POST",
+            data: { 
+                title: $("#title").val(),
+                author: checkUsernameCookie(),
+                caption: $("#caption").val(),
+                description: $("#description").val()
+            },
+            success: function(result) {
+                displayAll();
+            },
+            error: function(result) {
+                alert('error');
+            }
+        });
+    });
+
+    // sign in functions
+    function navBarButtons() {
+        if (checkUsernameCookie() == "") {
+            $("#oauth-signin").show();
+            $("#sign-out-link").hide();
+            $("#create-page-link").hide();
+        } else {
+            $("#oauth-signin").hide();
+            $("#sign-out-link").show();
+            $("#create-page-link").show();
+        }
+    }
+
+    function checkUsernameCookie() {
+        var usernameCookie = "username=";
+        var cookies = document.cookie;
+        var split = cookies.split(';');
+        for (var i = 0; i < split.length; i++) {
+            var cookie = split[i];
+            while(cookie.charAt(0) == ' ') {
+                cookie = cookie.substring(1);
+            }
+            if (cookie.indexOf(usernameCookie) == 0) {
+                return cookie.substring(usernameCookie.length, cookie.length);
+            }
+        }
+        return "";
+    }
+
+    function setUsernameCookie(username) {
+        var d = new Date();
+        d.setTime(d.getTime() + (1*60*60*1000)); // login lasts for one hour
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = "username=" + username + ";" + expires + ";path=/";
+    }
+
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        setUsernameCookie(profile.getEmail());
+        navBarButtons();
+    }
+
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            setUsernameCookie("");
+            navBarButtons();
+        });
+    }
+
+    function checkSize() {
+        $.ajax({
+            url: "GetAllWorkouts",
+            success: function(result) {
+                var newSize = Object.keys(result).length;
+                if (newSize !== size) {
+                    var posted = newSize - size;
+                    var display;
+                    if (posted > 1) {
+                        display = posted.toString() + " new workouts!"
+                    } else {
+                        display = posted.toString() + " new workout!"
+                    }
+                    $(".alert-banner").html(display);
+                }
+            },
+            error: function(result) {
+                alert('error');
+            }
+        });
+    }
+
+    setInterval(function(){
+        checkSize()
+    }, 15000)
+</script>
+</html>
