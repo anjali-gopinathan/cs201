@@ -24,11 +24,16 @@
   <p>Please enter your age:</p>
   <input type="text" id="agenum" name="age"><br>
   
-  <label for="rating">Rate how you're day is goin:</label><input type="range" name="rating" min="0" max="10"><br>
+  <label for="rating">Rate how your day is goin:</label><input type="range" name="rating" min="0" max="10"><br>
 	<label for="month">Month you were born:</label><input type="month" name="month" min="2021-04" value="2018-05"><br>
  <label for="phone">Phone #:</label><input type="text" name="Phone Number" pattern="[7-9]{1}[0-9]{9}" 
        title="Phone number with 7-9 and remaing 9 digit with 0-9" placeholder="123-45-678"> <br>
-  <input type="submit" name="submit" value="Submit"><br>
+  <input type="submit" name="submit" value="Submit" onclick="sendData();"><br>
+  <script>
+  	function sendData(){
+  		
+  	}
+  </script>
   <input type="reset" name="reset" value="Reset">
   
   
