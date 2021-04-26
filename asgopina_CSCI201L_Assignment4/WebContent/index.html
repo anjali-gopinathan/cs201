@@ -27,21 +27,54 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	
-	
 </head>
 <body>
+	<div class="main">
+	<script type="text/javascript" src="nav.js"></script>
 
 	<form name="searchbar" method="GET" action="SearchStocksServlet">
 		<div class="container">
 			<!--  fieldset><legend>Stock Search</legend-->
+			<div class="heading">
+				STOCK SEARCH
+			</div><br><br>
 			<div class="child">
-				<label for="searchquery">Enter stock ticker</label>
-				<input type="text" name="searchquery" required>
-				<input type="submit" name="submit" value="Search">
+				<!--  label for="searchquery">Enter stock ticker</label-->
+				<input type="text" name="searchquery"  placeholder="Enter stock ticker" required>
+				<input type="submit" name="submit"><i class="fas fa-search"></i>
 			</div>	
 			<!--/fieldset-->
 		</div>
 	</form>
+	</div>
 
 </body>
+<script>
+	var nav = document.querySelector('.main-nav');
+
+	$("#logo-link").click(function() {
+	    displayAll();
+	});
+	
+    $(function() {
+        $("form").validate();
+    });
+    /*$("form").on("submit", function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "StockDetails",
+            type: "POST",
+            data: { 
+                title: $("#title").val()
+            },
+            success: function(result) {
+                displayAll();
+            },
+            error: function(result) {
+                alert('error');
+            }
+        });
+    });*/
+</script>
+
 </html>

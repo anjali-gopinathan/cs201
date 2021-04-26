@@ -1,6 +1,6 @@
 DROP DATABASE if exists salStocks;
 CREATE DATABASE salStocks;
-USE salStocks;
+USE salstocks;
 CREATE TABLE Stocks (
 	stockID int primary key not null auto_increment,
     ticker varchar(200) not null,

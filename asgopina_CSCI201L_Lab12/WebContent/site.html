@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+       <title>AJAX Form</title>
+      <script>
+         function validateUsername() {
+           var xhttp = new XMLHttpRequest();
+           xhttp.open("POST", "Validate", true);
+           xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          	xhttp.onreadystatechange = function() {
+            	document.getElementById("usernameMsg").innerHTML = this.responseText;
+          }
+          xhttp.send("field=username&username=" + document.myform.username.value);
+        }
+        function validatePassword() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.open("GET", "Validate?field=password&password=" + document.myform.pass.value, true);
+          xhttp.onreadystatechange = function() {
+            	document.getElementById("passwordMsg").innerHTML = this.responseText;
+          }
+          xhttp.send();
+        }
+      </script>
+	</head>
+	<body>
+      <form name="myform" action="Validate" method="POST">
+      	<label for="fname">First name </label><input type="text" name="fname" required><br>
+		<label for="lname">Last name </label><input type="text" name="lname"><br>
+		<label for="email">Email: </label><input type="email" name="email"><br>
+      
+        Username <input type="text" name="username" value="anjali" onblur="validateUsername();"/>
+        <strong><div id="usernameMsg"></div></strong><br />
+        Password <input type="password" name="pass" value="test" onblur="validatePassword();"/>
+        <strong><div id="passwordMsg"></div></strong><br />
+        <input type="submit" name="submit" value="Authenticate" />
+      </form>
+      <script>
+	      function reqListener(){
+			document.getElementById("firstname").innerHTML = this.responseText;
+			console.log(this.responseText);
+	      };
+      	var xhr = new XMLHTTPRequest();
+      	xhr.addEventListener("load", reqListener);
+      	xhr.open('GET', '/validate', true);
+      	xhr.send();
+      </script>
+      <div>
+	      <table>
+			<tr>
+				<td>First name</td>
+				<td>
+					<p id="firstname"></p>
+				</td>
+			</tr>
+	      </table>
+      </div>
+	</body>
+</html>

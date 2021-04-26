@@ -90,6 +90,11 @@ h1{
 	position: relative;
 }
 .logo{
+	font-family: PT Sans Caption, sans-serif;
+	color: white;
+	font-size: 2em;
+	text-decoration: none;	
+		
 	width: 65px;
 	height: 100%;
 	margin-left: 30px;
@@ -101,13 +106,14 @@ h1{
 .logo a{
 	font-family: PT Sans Caption, sans-serif;
 	text-decoration: none;
-	color: black;
+	color: white;
 	font-size: 2em;
 }
-.red-text{
+.white-text{
 	font-family: PT Sans Caption, sans-serif;
+	font-size: 18px;
 	text-decoration: none;
-	color: #ff6666;
+	color: #000000;
 }
 
 .navbar-buffer{

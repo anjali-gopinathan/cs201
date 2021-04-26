@@ -1,5 +1,6 @@
 package searchstocks;
 
+import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
@@ -47,7 +48,7 @@ public class SearchStocksServlet extends HttpServlet {
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		String query = request.getParameter("searchquery");
 		String sqlString = "SELECT * FROM Stocks WHERE ticker LIKE '%" + query + "%'";		
-		System.out.println("about to execute the following SQL statement:" + sqlString);
+		System.out.println("about to execute the following SQL statement: " + sqlString);
 
 		PrintWriter out = response.getWriter();		
 		Connection conn = null;
@@ -59,19 +60,21 @@ public class SearchStocksServlet extends HttpServlet {
 		
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/salStocks?user=root&password=root");
+            System.out.println("about to make connection");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/salstocks?user=root&password=root");
+            System.out.println("made connection");
             st = conn.createStatement();
             rs = st.executeQuery(sqlString);
 
             while (rs.next()) {
             	Stock stocko = 
             			new Stock(
-                                rs.getString("name"),
-                                rs.getString("ticker"),
-                                rs.getString("startDate"),
-                                rs.getString("exchangeCode"),
-                                rs.getString("description"),
-                                rs.getInt("stockBrokers")
+							rs.getString("name"),
+							rs.getString("ticker"),
+							rs.getString("startDate"),
+							rs.getString("exchangeCode"),
+							rs.getString("description"),
+							rs.getInt("stockBrokers")
                         );
                 stocks.add(stocko);
             }
@@ -111,7 +114,7 @@ public class SearchStocksServlet extends HttpServlet {
 
             
             response.setContentType("application/json");
-            out.println(new Gson().toJson(stocks));
+            out.println(gson.toJson(stocks));
         } catch (SQLException | ClassNotFoundException sqle) {
             System.out.println ("SQLException (likely that value could not be found): " + sqle.getMessage());
         } catch (DataFormatException dfe) {
@@ -138,10 +141,10 @@ public class SearchStocksServlet extends HttpServlet {
 //	/**
 //	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 //	 */
-//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//		doGet(request, response);
-//	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
 //	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //		PrintWriter out = response.getWriter();
 //		String query = request.getParameter("searchquery");
