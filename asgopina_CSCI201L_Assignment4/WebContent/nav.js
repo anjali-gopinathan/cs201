@@ -24,6 +24,33 @@ $(window).on("load", function(){
     displayAll();
 });
 
+function displayAll(){
+	
+}
+
+function displayDetails(){
+	$("#search").hide();
+	$("#stockdetails").show();
+    $.ajax({
+	    url: "SearchStocksServlet",
+	    success: function(result) {
+	        size = Object.keys(result).length;
+			jsonParsed = JSON.parse(result);
+	        $("#stockdetails").empty();
+			for(key in jsonParsed){
+				if(jsonParsed.hasOwnProperty(key)){
+					$("#stockdetails").append(''
+						+ '<div id="' + key + '"><h2>' + key + ' : ' + jsonParsed[key] + '</h2></div>'
+					);
+				}
+			}
+	    },
+	    error: function(result) {
+	        alert('error');
+	    }
+	});
+
+}
 
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
